@@ -1,0 +1,118 @@
+version: 2.1
+
+jobs:
+  build-ecs-image:
+    docker:
+      - image: docker:18.06.1-ce-git
+    working_directory: ~/qa
+    steps:
+      - checkout
+      - setup_remote_docker:
+          docker_layer_caching: true
+      - run:
+          name: Install dependencies
+          command: |
+            apk add --update --no-cache --no-progress \
+              py2-pip==10.0.1-r0 curl git
+            pip install --progress-bar off awscli==1.11.91
+      - run:
+          name: Define Docker environment variables
+          command: |
+            COMMIT_ID=$(git log --format="%H" -n 1 | cut -c 1-7)
+            echo "export COMMIT_ID=\"${COMMIT_ID}\"" >> /etc/environment
+            echo "export AWS_ECR_SERVER_IMAGE=\" AWS_SERVER_IP \""  >> /etc/environment
+
+      - run:
+          name: Build server and processor Docker images
+          command: |
+            source /etc/environment
+            docker build -f Dockerfile . \
+              --build-arg APP_ROOT=${APP_ROOT} \
+              -t ${AWS_ECR_SERVER_IMAGE}:${COMMIT_ID} \
+              -t ${AWS_ECR_SERVER_IMAGE}:latest
+      - run:
+          name: Push Docker images to ECR
+          command: |
+            source /etc/environment
+            aws configure set region ${AWS_REGION}
+            $(aws ecr get-login --no-include-email)
+            docker push ${AWS_ECR_SERVER_IMAGE}:${COMMIT_ID}
+            docker push ${AWS_ECR_SERVER_IMAGE}:latest
+      - persist_to_workspace:
+          root: /etc
+          paths:
+            - environment
+
+  build-and-test-prd:
+    working_directory: ~/web_cucumber_automation
+    docker:
+      - image: docker:18.06.1-ce-git 
+    steps:
+      - checkout
+      - setup_remote_docker
+      - run:
+          name: Build environment
+          command: |
+            docker build -t web_automation --build-arg "ENV=prd" .
+      - run:
+          name: Run tests
+          command: |
+            docker run --rm -it --ipc=host --name web_automation web_automation
+
+  build-and-test-sbx:
+    working_directory: ~/web_cucumber_automation
+    docker:
+      - image: docker:18.06.1-ce-git 
+    steps:
+      - checkout
+      - setup_remote_docker
+      - run:
+          name: Build environment
+          command: |
+            docker build -t web_automation --build-arg "ENV=sbx" .
+      - run:
+          name: Run tests
+          command: |
+            docker run --rm -it --ipc=host --name web_automation web_automation
+
+workflows:
+  version: 2
+
+  # Disable unitl OPS task is complete
+  # pull-request:
+  #   jobs:
+  #     - build-ecs-image:
+  #         filters:
+  #           branches:
+  #             only: staging
+
+  commit-workflow:
+    jobs:
+      - build-and-test-sbx:
+          filters:
+            branches:
+              only :
+                - feature/cypress
+      - build-and-test-sbx:
+          filters:
+            branches:
+              only :
+                - staging
+      - build-and-test-prd:
+          filters:
+            branches:
+              only :
+                - master
+
+
+  # ALL NIGHTS AT 12 - DISABLE DUE TO NOT WORKING YET
+  nightly-workflow:
+    triggers:
+      - schedule:
+          cron: "0 0 * * *"
+          filters:
+            branches:
+              only:
+                - master
+    jobs: 
+      - build-and-test-prd

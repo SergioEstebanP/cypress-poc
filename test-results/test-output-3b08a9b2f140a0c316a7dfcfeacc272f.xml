@@ -1,9 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<testsuites name="Mocha Tests" time="13.8130" tests="1" failures="0">
-  <testsuite name="Root Suite" timestamp="2021-03-10T12:03:05" tests="0" file="cypress/integration/cookies.feature" time="0.0000" failures="0">
-  </testsuite>
-  <testsuite name="Close cookies windows" timestamp="2021-03-10T12:03:05" tests="1" time="13.8130" failures="0">
-    <testcase name="Close cookies windows Close cookies" time="13.8130" classname="Close cookies">
-    </testcase>
-  </testsuite>
-</testsuites>

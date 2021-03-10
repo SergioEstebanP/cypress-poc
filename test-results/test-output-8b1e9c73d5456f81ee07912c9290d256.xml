@@ -1,9 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<testsuites name="Mocha Tests" time="11.8790" tests="1" failures="0">
-  <testsuite name="Root Suite" timestamp="2021-03-10T12:03:31" tests="0" file="cypress/integration/register.feature" time="0.0000" failures="0">
-  </testsuite>
-  <testsuite name="A user registers into the application" timestamp="2021-03-10T12:03:31" tests="1" time="11.8790" failures="0">
-    <testcase name="A user registers into the application A new user registers in the application successfully" time="11.8790" classname="A new user registers in the application successfully">
-    </testcase>
-  </testsuite>
-</testsuites>

@@ -1,0 +1,43 @@
+# Compiled class files
+*.class
+
+# Log file
+*.log
+
+# Package files 
+*.war
+*.nar
+*.ear
+*.tar.gz
+*.rar
+
+# Intellij Idea files
+.idea
+.iml
+
+# Mac files
+.DS_*
+
+# Gradle files
+.gradle/*
+
+# Other files
+!build/docs
+bin/
+
+# VS Code
+.settings
+.classpath
+.build
+.project
+.vscode
+
+# Report files
+target/*
+reports/*
+
+history/
+
+node_modules
+test-results
+cypress/videos
