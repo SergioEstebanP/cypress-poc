@@ -1,0 +1,52 @@
+{
+    "name": "cypress-cucumber-zinio",
+    "version": "1.0.0",
+    "description": "Web Automation Framework Zinio",
+    "main": "index.js",
+    "scripts": {
+        "cypress:open:stg": "CYPRESS_ENV=staging npm run cypress:open",
+        "cypress:open:sbx": "CYPRESS_ENV=sandbox npm run cypress:open",
+        "cypress:open:prd": "CYPRESS_ENV=production npm run cypress:open",
+        "cypress:open": "cypress open",
+        "test:stg": "CYPRESS_ENV=staging npm run test",
+        "test:sbx": "CYPRESS_ENV=sandbox npm run test",
+        "test:prd": "CYPRESS_ENV=production npm run test",
+        "test": "cypress run --env TAGS='@run' --spec 'cypress/integration/**/*.feature' --record --key 847b57c6-1ab6-4973-a81a-9047b524bc64",
+        "test:debug:stg": "CYPRESS_ENV=staging npm run test:debug",
+        "test:debug:sbx": "CYPRESS_ENV=sandbox npm run test:debug",
+        "test:debug:prd": "CYPRESS_ENV=production npm run test:debug",
+        "test:debug": "cypress run --headed --browser chrome --env TAGS='@e2e-test' --spec 'cypress/integration/**/*.feature'"
+    },
+    "author": "",
+    "license": "Private",
+    "dependencies": {
+        "axios": "^0.21.0",
+        "cypress": "^6.6.0",
+        "cypress-cucumber-preprocessor": "^1.0.0",
+        "fs-extra": "^9.0.1",
+        "glob": "^7.1.6"
+    },
+    "devDependencies": {
+        "eslint": "^7.15.0",
+        "eslint-config-airbnb-base": "^14.2.1",
+        "eslint-config-prettier": "^7.0.0",
+        "eslint-plugin-import": "^2.22.1",
+        "eslint-plugin-prettier": "^3.2.0",
+        "husky": "^4.3.5",
+        "lint-staged": "^10.5.3"
+    },
+    "cypress-cucumber-preprocessor": {
+        "nonGlobalStepDefinitions": true
+    },
+    "husky": {
+        "hooks": {
+            "pre-commit": "lint-staged"
+        }
+    },
+    "lint-staged": {
+        "*.js": [
+            "eslint",
+            "git add"
+        ]
+    }
+}

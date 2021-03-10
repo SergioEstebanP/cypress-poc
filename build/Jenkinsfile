@@ -1,0 +1,21 @@
+// Set some global properties as discarded policy
+properties([
+    buildDiscarder(logRotator(daysToKeepStr: '5', numToKeepStr: '10')),
+])
+
+node ('docker-android'){
+    // Get all the resources, git clone the repository. Always branch: staging
+    stage('Getting resources') {
+        git branch: 'feature/cypress',
+        credentialsId: '41a1180d-8026-450c-a7bd-69ae551a8fae',
+        url: 'git@bitbucket.org:ziniollc/web_cucumber_automation.git'
+    }
+
+    stage('Get Dependencies') {
+        ansiColor('xterm') {
+            sh ""
+            sh "npm install"
+            sh "npm run test:prd"
+        }
+    }
+}

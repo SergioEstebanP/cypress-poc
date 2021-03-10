@@ -1,0 +1,16 @@
+{
+  "baseUrl": "https://www.zinio.com/es",
+  "ignoreTestFiles": [
+    "*.js",
+    "*.md"
+  ],
+  "reporter": "junit",
+  "reporterOptions": {
+    "mochaFile": "test-results/test-output-[hash].xml"
+  },
+  "chromeWebSecurity": true,
+  "projectId": "mvfhih",
+
+  "defaultCommandTimeout": 300000,
+  "pageLoadTimeout": 120000
+}

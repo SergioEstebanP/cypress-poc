@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuites name="Mocha Tests" time="16.014" tests="1" failures="0">
+  <testsuite name="Root Suite" timestamp="2021-03-09T16:36:49" tests="0" file="cypress/integration/cookies.feature" failures="0" time="0">
+  </testsuite>
+  <testsuite name="Close cookies windows" timestamp="2021-03-09T16:36:49" tests="1" failures="0" time="16.014">
+    <testcase name="Close cookies windows Close cookies" time="16.014" classname="Close cookies">
+    </testcase>
+  </testsuite>
+</testsuites>
